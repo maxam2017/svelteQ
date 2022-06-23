@@ -3,7 +3,7 @@ import { Writable } from 'svelte/store';
 import { stringify } from 'qs';
 import { alphabeticalSort } from './utils';
 
-type FetchStore<T> = {
+export type FetchStore<T = any> = {
   data?: T;
   loading?: boolean;
   error?: unknown;
@@ -13,7 +13,7 @@ type FetchStore<T> = {
 type FetchFn<Data, Arguments> = (
   args: Arguments | undefined,
   fetcher: typeof fetch
-) => Promise<Data>;
+) => Promise<Data> | Data;
 
 type QueryOptions<Data> = {
   policy?: {
@@ -24,14 +24,19 @@ type QueryOptions<Data> = {
 
 class Query<
   Data,
-  Arguments extends Partial<Record<string, string | number | boolean>>
+  Arguments extends
+    | Partial<Record<string, string | number | boolean>>
+    | number
+    | string
+    | boolean
+    | void = void
 > {
   private _fetchFn: FetchFn<Data, Arguments>;
   private _prevArgs: Arguments | undefined;
   private _cacheMap: Map<string, Promise<void>> = new Map();
-  private _policy: QueryOptions<Data>['policy'] = {
+  private _policy: Required<Required<QueryOptions<Data>>['policy']> = {
     merge: (_, s) => s,
-    noMore: () => false
+    noMore: () => false,
   };
   private _store: Writable<FetchStore<Data>>;
 
@@ -74,21 +79,21 @@ class Query<
       if (store.noMore) return;
 
       try {
-        this.update(state => ({ ...state, loading: true }));
+        this.update((state) => ({ ...state, loading: true }));
 
         const data = await this._fetchFn(args, fetcher);
-        this.update(state => ({
+        this.update((state) => ({
           ...state,
-          data: this._policy?.merge?.(state.data, data),
-          noMore: this._policy?.noMore?.(data)
+          data: this._policy.merge(state.data, data),
+          noMore: this._policy.noMore(data),
         }));
 
         // TODO: support revalidate feature.
         this._cacheMap.delete(key);
       } catch (error) {
-        this.update(state => ({ ...state, error }));
+        this.update((state) => ({ ...state, error }));
       } finally {
-        this.update(state => ({ ...state, loading: false }));
+        this.update((state) => ({ ...state, loading: false }));
       }
     })();
 
