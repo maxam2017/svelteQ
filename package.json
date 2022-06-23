@@ -1,5 +1,6 @@
 {
   "name": "svelte-q",
+  "description": "svelteQ is a data fetching library built for Svelte",
   "author": "maxam2017",
   "version": "0.1.0",
   "license": "MIT",
@@ -7,6 +8,13 @@
   "main": "dist/index.js",
   "module": "dist/svelte-q.esm.js",
   "typings": "dist/index.d.ts",
+  "keywords": [
+    "svelte",
+    "request",
+    "fetch",
+    "cache",
+    "query"
+  ],
   "files": [
     "dist"
   ],
