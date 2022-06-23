@@ -28,14 +28,10 @@
     "test:watch": "tsdx test --watch",
     "test:coverage": "tsdx test --coverage",
     "lint": "tsdx lint",
-    "prepare": "tsdx build",
+    "lint:fix": "tsdx lint --fix",
+    "prepare": "rm -rf .husky && husky install && npx husky add .husky/pre-commit \"pnpm lint:fix\" && tsdx build",
     "size": "size-limit",
     "analyze": "size-limit --why"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
   },
   "prettier": {
     "printWidth": 80,
@@ -57,6 +53,7 @@
     "@size-limit/preset-small-lib": "^7.0.8",
     "@types/qs": "^6.9.7",
     "husky": "^8.0.1",
+    "lint-staged": "^13.0.2",
     "size-limit": "^7.0.8",
     "svelte": "^3.48.0",
     "tsdx": "^0.14.1",

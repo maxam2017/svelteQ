@@ -43,8 +43,8 @@ describe('query', () => {
     let fetcher = jest.fn(() => (count += 1));
     let fakeQ = new Query(fetcher, {
       policy: {
-        noMore: () => count === maxCount,
-      },
+        noMore: () => count === maxCount
+      }
     });
 
     fakeQ.select(); // 1
@@ -61,12 +61,12 @@ describe('query', () => {
     let fetcher = jest.fn(() => 1);
     let fakeQ = new Query(fetcher, {
       policy: {
-        merge: (prev = 0, cur) => prev + cur,
-      },
+        merge: (prev = 0, cur) => prev + cur
+      }
     });
 
     let sum = 0;
-    fakeQ.subscribe((store) => (sum = store.data || 0));
+    fakeQ.subscribe(store => (sum = store.data || 0));
 
     fakeQ.select();
     await delay();
@@ -84,7 +84,7 @@ describe('query', () => {
     });
 
     let store: FetchStore;
-    fakeQ.subscribe((cur) => (store = cur));
+    fakeQ.subscribe(cur => (store = cur));
 
     fakeQ.select();
     await delay();
@@ -98,7 +98,7 @@ describe('query', () => {
     let fakeQ = new Query<void, typeof arg>(() => {});
 
     fakeQ.select(arg);
-    fakeQ.select((prev) => {
+    fakeQ.select(prev => {
       expect(prev).toBe(arg);
       return prev;
     });

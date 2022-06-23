@@ -36,7 +36,7 @@ class Query<
   private _cacheMap: Map<string, Promise<void>> = new Map();
   private _policy: Required<Required<QueryOptions<Data>>['policy']> = {
     merge: (_, s) => s,
-    noMore: () => false,
+    noMore: () => false
   };
   private _store: Writable<FetchStore<Data>>;
 
@@ -79,21 +79,21 @@ class Query<
       if (store.noMore) return;
 
       try {
-        this.update((state) => ({ ...state, loading: true }));
+        this.update(state => ({ ...state, loading: true }));
 
         const data = await this._fetchFn(args, fetcher);
-        this.update((state) => ({
+        this.update(state => ({
           ...state,
           data: this._policy.merge(state.data, data),
-          noMore: this._policy.noMore(data),
+          noMore: this._policy.noMore(data)
         }));
 
         // TODO: support revalidate feature.
         this._cacheMap.delete(key);
       } catch (error) {
-        this.update((state) => ({ ...state, error }));
+        this.update(state => ({ ...state, error }));
       } finally {
-        this.update((state) => ({ ...state, loading: false }));
+        this.update(state => ({ ...state, loading: false }));
       }
     })();
 
