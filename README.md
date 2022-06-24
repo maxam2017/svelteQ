@@ -1,14 +1,10 @@
 ![svelteQ](https://user-images.githubusercontent.com/25841814/175697775-bf9daaa4-7e46-46d2-bab1-adf713e676e1.png)
 
-Feel frustrated when maintaining heavy data-fetching logic in Svelte project? Let's try svelteQ!
-
-[![GitHub issues](https://img.shields.io/github/issues/maxam2017/svelte-q)](https://github.com/maxam2017/svelte-q/issues)
-[![GitHub stars](https://img.shields.io/github/stars/maxam2017/svelte-q)](https://github.com/maxam2017/svelte-q/stargazers)
-![GitHub closed issues](https://img.shields.io/github/issues-closed/maxam2017/svelte-q)
-![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/maxam2017/svelte-q)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/maxam2017/svelte-q)
-[![GitHub license](https://img.shields.io/github/license/maxam2017/svelte-q)](https://github.com/maxam2017/svelte-q)
-[![Twitter Follow](https://img.shields.io/twitter/follow/svelteqjs?style=social)](https://twitter.com/svelteqjs)
+[![npm version][npm-image]][npm-url]
+[![build status][workflows-image]][workflows-url]
+[![Test coverage][codecov-image]][codecov-url]
+[![License][license-image]][license-url]
+[![PR's Welcome][pr-welcoming-image]][pr-welcoming-url]
 
 ## What is svelteQ?
 
@@ -28,11 +24,6 @@ $ npm i svelte-q
 
 or use other package managers, ex. yarn, pnpm...
 
-<!-- ## Community support
-
-- [GitHub](https://github.com/ToolJet/ToolJet/issues) - Bug reports or feature requests.
-- [Twitter](https://twitter.com/svelteqjs) - Get the library updates easily. -->
-
 ## Contributors
 
 <a href="https://github.com/maxam2017/svelte-q/graphs/contributors">
@@ -41,4 +32,17 @@ or use other package managers, ex. yarn, pnpm...
 
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License.
+
+[npm-image]: https://badge.fury.io/js/svelte-q.svg
+[npm-url]: https://www.npmjs.com/package/svelte-q
+[workflows-image]: https://github.com/maxam2017/svelteQ/workflows/CI/badge.svg
+[workflows-url]: https://github.com/maxam2017/svelteQ/actions/workflows/main.yml
+[codecov-image]: https://codecov.io/gh/maxam2017/svelteQ/branch/main/graph/badge.svg
+[codecov-url]: https://codecov.io/github/maxam2017/svelteQ?branch=main
+[license-image]: https://img.shields.io/github/license/maxam2017/svelte-q?style=flat-square
+[license-url]: https://github.com/maxam2017/svelteQ
+[twitter-image]: https://img.shields.io/twitter/url?color=%23555555&label=@svelteqjs&logo=twitter&style=flat-square&url=https%3A%2F%2Ftwitter.com%2Fsvelteqjs
+[twitter-url]: https://twitter.com/svelteqjs
+[pr-welcoming-image]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
+[pr-welcoming-url]: https://github.com/koajs/koa/pull/new
