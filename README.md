@@ -1,4 +1,4 @@
-![svelteQ](https://user-images.githubusercontent.com/25841814/175106060-58f9c9f0-fc42-4fdb-8a3d-e334e3a7c334.png)
+![svelteQ](https://user-images.githubusercontent.com/25841814/175697775-bf9daaa4-7e46-46d2-bab1-adf713e676e1.png)
 
 Feel frustrated when maintaining heavy data-fetching logic in Svelte project? Let's try svelteQ!
 
@@ -10,7 +10,7 @@ Feel frustrated when maintaining heavy data-fetching logic in Svelte project? Le
 [![GitHub license](https://img.shields.io/github/license/maxam2017/svelte-q)](https://github.com/maxam2017/svelte-q)
 [![Twitter Follow](https://img.shields.io/twitter/follow/svelteqjs?style=social)](https://twitter.com/svelteqjs)
 
-## Overview
+## What is svelteQ?
 
 svelteQ is a **data fetching** library built for Svelte. You can simplify the logic of data fetching in your project, and also have all these amazing features out-of-the-box:
 
