@@ -28,5 +28,8 @@ jobs:
       - name: Test
         run: yarn test --ci --coverage --maxWorkers=2
 
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v2
+
       - name: Build
         run: yarn build
