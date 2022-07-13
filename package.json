@@ -5,8 +5,7 @@
   "version": "0.3.0",
   "license": "MIT",
   "type": "module",
-  "main": "dist/index.js",
-  "module": "dist/svelte-q.esm.js",
+  "exports": "./dist/svelte-q.esm.js",
   "typings": "dist/index.d.ts",
   "keywords": [
     "svelte",
@@ -22,8 +21,8 @@
     "node": ">=14"
   },
   "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
+    "start": "tsdx watch --format esm",
+    "build": "tsdx build --format esm",
     "test": "tsdx test",
     "test:watch": "tsdx test --watch",
     "test:coverage": "tsdx test --coverage",
