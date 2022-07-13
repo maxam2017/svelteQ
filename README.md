@@ -10,7 +10,8 @@
 
 svelteQ is a **data fetching** library built for Svelte. You can simplify the logic of data fetching in your project, and also have all these amazing features out-of-the-box:
 
-- 🏎️ Fast, lightweight and reusable
+- 🪶 lightweight - [less than 4kB](https://bundlephobia.com/package/svelte-q)
+- 🏎️ Fast and reusable
 - 🔥 Built-in cache and request deduplication
 - 🤗 Backend agnostic
 - ✅ SSR support
