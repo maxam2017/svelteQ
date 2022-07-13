@@ -2,7 +2,7 @@
   "name": "svelte-q",
   "description": "svelteQ is a data fetching library built for Svelte",
   "author": "maxam2017",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
