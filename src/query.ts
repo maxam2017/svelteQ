@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import { get, writable } from 'svelte/store';
 import { Writable } from 'svelte/store';
 import { stringify } from 'qs';
@@ -109,7 +108,6 @@ class Query<
 
     const promise = (async () => {
       const store = get(this._store);
-      console.log(store);
       if (store.noMore) return;
 
       try {
