@@ -1,7 +1,6 @@
 import { get, writable } from 'svelte/store';
 import { Writable } from 'svelte/store';
-import { stringify } from 'qs';
-import { alphabeticalSort } from './utils';
+import { stringify } from './utils';
 
 export type FetchStore<T = any> = {
   data?: T;
@@ -102,7 +101,7 @@ class Query<
         ? argsOrArgsFn(this._prevArgs)
         : argsOrArgsFn;
     this._prevArgs = args;
-    const key = stringify(args, { sort: alphabeticalSort });
+    const key = stringify(args);
     const cachedPromise = this._cacheMap.get(key);
     if (cachedPromise) return cachedPromise;
 

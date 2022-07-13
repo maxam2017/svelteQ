@@ -63,7 +63,5 @@
   "peerDependencies": {
     "svelte": "^3.48.0"
   },
-  "dependencies": {
-    "qs": "^6.10.5"
-  }
+  "dependencies": {}
 }
