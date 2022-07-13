@@ -33,8 +33,6 @@ type QueryOptions<Data> = {
    */
 };
 
-const SharedStore = writable({});
-
 class Query<
   Data,
   Arguments extends
@@ -51,6 +49,7 @@ class Query<
     merge: (_, s) => s,
     noMore: () => false
   };
+  private _shared: Writable<FetchStore<Data>>;
   private _store: Writable<FetchStore<Data>>;
 
   /**
@@ -74,7 +73,8 @@ class Query<
   ) {
     this._fetchFn = fetchFn;
 
-    this._store = SharedStore;
+    this._shared = writable({});
+    this._store = this._shared;
     this.update = this._store.update;
     this.subscribe = this._store.subscribe;
     this.set = this._store.set;
@@ -85,15 +85,17 @@ class Query<
     argsOrArgsFn?: ((prevArgs: Arguments | undefined) => Arguments) | Arguments,
     fetcher = fetch
   ) => {
-    this._store = this._storeMap.get(fetcher) || SharedStore;
+    if (typeof window === 'undefined') {
+      this._store = this._storeMap.get(fetcher) || this._shared;
 
-    if (this._store === SharedStore) {
-      const s = writable({});
-      this._storeMap.set(fetcher, s);
-      this._store = s;
-      this.update = this._store.update;
-      this.subscribe = this._store.subscribe;
-      this.set = this._store.set;
+      if (this._store === this._shared) {
+        const s = writable({});
+        this._storeMap.set(fetcher, s);
+        this._store = s;
+        this.update = this._store.update;
+        this.subscribe = this._store.subscribe;
+        this.set = this._store.set;
+      }
     }
 
     const args =
@@ -107,6 +109,7 @@ class Query<
 
     const promise = (async () => {
       const store = get(this._store);
+      console.log(store);
       if (store.noMore) return;
 
       try {
@@ -123,7 +126,6 @@ class Query<
         // TODO: support revalidate feature.
         this._cacheMap.delete(key);
       } catch (error) {
-        console.log(error);
         this.update(state => ({ ...state, error }));
       } finally {
         this.update(state => ({ ...state, loading: false }));
