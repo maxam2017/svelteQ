@@ -114,7 +114,11 @@ class Query<
         ? argsOrArgsFn(this._prevArgs)
         : argsOrArgsFn;
     this._prevArgs = args;
-    const key = stringify(args);
+    const key = stringify(
+      Array.isArray(this._keyArgs) && typeof args === 'object'
+        ? pick(args as Record<string, string | number | boolean>, this._keyArgs)
+        : args
+    );
     const cachedPromise = this._cacheMap.get(key);
     if (cachedPromise) return cachedPromise;
 
