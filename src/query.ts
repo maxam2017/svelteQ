@@ -137,7 +137,7 @@ class Query<
             ? {
                 ...state.data,
                 [key]: this._policy.merge(
-                  (state.data as Record<string, Data>)[key],
+                  (state.data as Record<string, Data>)?.[key],
                   data
                 )
               }
@@ -178,7 +178,7 @@ class Query<
       );
 
       return derived(store, $store => ({
-        data: ($store.data as Record<string, Data>)[key],
+        data: ($store.data as Record<string, Data>)?.[key],
         loading: $store.loading,
         error: $store.error,
         noMore: $store.noMore
