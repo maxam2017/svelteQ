@@ -18,7 +18,7 @@ describe('query', () => {
     let fakeQ = new Query(async () => fetcher());
 
     let callback = jest.fn();
-    fakeQ.subscribe(callback);
+    fakeQ.read().subscribe(callback);
 
     fakeQ.select();
     expect(callback).toBeCalled();
@@ -66,7 +66,7 @@ describe('query', () => {
     });
 
     let sum = 0;
-    fakeQ.subscribe(store => (sum = store.data || 0));
+    fakeQ.read().subscribe(store => (sum = store.data || 0));
 
     fakeQ.select();
     await delay();
@@ -84,7 +84,7 @@ describe('query', () => {
     });
 
     let store: FetchStore;
-    fakeQ.subscribe(cur => (store = cur));
+    fakeQ.read().subscribe(cur => (store = cur));
 
     fakeQ.select();
     await delay();

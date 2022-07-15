@@ -2,6 +2,18 @@ function alphabeticalSort(a: string, b: string) {
   return a.localeCompare(b);
 }
 
+export function pick<T extends Partial<Record<string, any>>>(
+  obj: T,
+  keys: (keyof T)[]
+) {
+  return keys.reduce<Partial<T>>((prev, cur) => {
+    return {
+      ...prev,
+      ...(typeof obj[cur] !== 'undefined' && { [cur]: obj[cur] })
+    };
+  }, {});
+}
+
 /**
  * refer to https://github.com/goto-bus-stop/qs-stringify/blob/default/index.js
  */

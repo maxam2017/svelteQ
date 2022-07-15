@@ -1,6 +1,6 @@
-import { get, writable } from 'svelte/store';
+import { derived, get, writable } from 'svelte/store';
 import { Writable } from 'svelte/store';
-import { stringify } from './utils';
+import { pick, stringify } from './utils';
 
 export type FetchStore<T = any> = {
   data?: T;
@@ -14,11 +14,18 @@ type FetchFn<Data, Arguments> = (
   fetcher: typeof fetch
 ) => Promise<Data> | Data;
 
-type QueryOptions<Data> = {
+type QueryOptions<Data, Arguments> = {
   policy?: {
-    merge?(original: Data | undefined, source: Data): Data;
-    noMore?(source: Data): boolean;
+    merge?(existing: Data | undefined, incoming: Data): Data;
+    noMore?(incoming: Data): boolean;
   };
+  /**
+   * when you use key args means every select can not put into same pool
+   * so we can use key args as key and make state into a map
+   */
+  keyArgs?: Arguments extends Record<string, any>
+    ? Array<keyof Arguments>
+    : never;
   /**
    * TODO: cache: 'public' | 'private'
    *
@@ -43,12 +50,15 @@ class Query<
   private _fetchFn: FetchFn<Data, Arguments>;
   private _prevArgs: Arguments | undefined;
   private _cacheMap: Map<string, Promise<void>> = new Map();
-  private _policy: Required<Required<QueryOptions<Data>>['policy']> = {
-    merge: (_, s) => s,
+  private _keyArgs: QueryOptions<Data, Arguments>['keyArgs'];
+  private _policy: Required<
+    Required<QueryOptions<Data, Arguments>>['policy']
+  > = {
+    merge: (_, incoming) => incoming,
     noMore: () => false
   };
-  private _shared: Writable<FetchStore<Data>>;
-  private _store: Writable<FetchStore<Data>>;
+  private _shared: Writable<FetchStore<Data | Record<string, Data>>>;
+  private _store: Writable<FetchStore<Data | Record<string, Data>>>;
 
   /**
    * there is a security issue about sharing the state in server side
@@ -61,13 +71,15 @@ class Query<
   /**
    * make query instance observable
    */
-  public update: Writable<FetchStore<Data>>['update'];
-  public subscribe: Writable<FetchStore<Data>>['subscribe'];
-  public set: Writable<FetchStore<Data>>['set'];
+  public update: Writable<FetchStore<Data | Record<string, Data>>>['update'];
+  public subscribe: Writable<
+    FetchStore<Data | Record<string, Data>>
+  >['subscribe'];
+  public set: Writable<FetchStore<Data | Record<string, Data>>>['set'];
 
   constructor(
     fetchFn: FetchFn<Data, Arguments>,
-    options: QueryOptions<Data> = {}
+    options: QueryOptions<Data, Arguments> = {}
   ) {
     this._fetchFn = fetchFn;
 
@@ -77,6 +89,7 @@ class Query<
     this.subscribe = this._store.subscribe;
     this.set = this._store.set;
     this._policy = { ...this._policy, ...options.policy };
+    this._keyArgs = options.keyArgs;
   }
 
   select = async (
@@ -116,7 +129,15 @@ class Query<
 
         this.update(state => ({
           ...state,
-          data: this._policy.merge(state.data, data),
+          data: this._keyArgs
+            ? {
+                ...state.data,
+                [key]: this._policy.merge(
+                  (state.data as Record<string, Data>)[key],
+                  data
+                )
+              }
+            : this._policy.merge(state.data as Data, data),
           noMore: this._policy.noMore(data)
         }));
 
@@ -138,6 +159,29 @@ class Query<
     if (typeof window == 'undefined') await promise;
 
     return this;
+  };
+
+  read = (args?: Arguments) => {
+    const store = {
+      update: this.update,
+      subscribe: this.subscribe,
+      set: this.set
+    };
+
+    if (Array.isArray(this._keyArgs) && typeof args === 'object') {
+      const key = stringify(
+        pick(args as Record<string, string | number | boolean>, this._keyArgs)
+      );
+
+      return derived(store, $store => ({
+        data: ($store.data as Record<string, Data>)[key],
+        loading: $store.loading,
+        error: $store.error,
+        noMore: $store.noMore
+      })) as Writable<FetchStore<Data>>;
+    }
+
+    return store as Writable<FetchStore<Data>>;
   };
 }
 
